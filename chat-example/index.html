@@ -2,7 +2,7 @@
   @Author: Noaghzil
   @Date:   2022-10-06 22:13:21
   @Last Modified by:   Noaghzil
-  @Last Modified time: 2022-10-07 09:27:21
+  @Last Modified time: 2022-10-10 15:11:59
 -->
 <!DOCTYPE html>
 <html>
@@ -29,7 +29,9 @@
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io();
+    var socket = io("http://211.154.163.74:21246/ws?channel_id=1&user_id=123", {
+      path: "/video-consultation/socket.io"
+    });
   
     var messages = document.getElementById('messages');
     var form = document.getElementById('form');
@@ -38,14 +40,15 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       if (input.value) {
-        socket.emit('chat message', input.value);
+        socket.emit('message', input.value);
         input.value = '';
       }
     });
   
-    socket.on('chat message', function(msg) {
+    socket.on('reply', function(msg) {
       var item = document.createElement('li');
       item.textContent = msg;
+      console.log(msg)
       messages.appendChild(item);
       window.scrollTo(0, document.body.scrollHeight);
     });
