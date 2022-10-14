@@ -2,7 +2,7 @@
   @Author: Noaghzil
   @Date:   2022-10-06 22:13:21
   @Last Modified by:   Noaghzil
-  @Last Modified time: 2022-10-10 15:11:59
+  @Last Modified time: 2022-10-14 11:16:29
 -->
 <!DOCTYPE html>
 <html>
@@ -29,7 +29,11 @@
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io("http://211.154.163.74:21246/ws?channel_id=1&user_id=123", {
+    //  http://211.154.163.74:21246/ws
+    // https://zsys-test.zuoshouyisheng.com/ws
+    // http://localhost:6066/ws
+    // https://dev-soi.zuoshouyisheng.com/ws
+    var socket = io("https://dev-soi.zuoshouyisheng.com/ws?channel_id=1&user_id=123", {
       path: "/video-consultation/socket.io"
     });
   
@@ -40,7 +44,9 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       if (input.value) {
-        socket.emit('message', input.value);
+        console.log('submit')
+        // socket.emit('message', input.value);
+        socket.emit('user_online', '{"channelId": "1"}');
         input.value = '';
       }
     });
@@ -51,6 +57,14 @@
       console.log(msg)
       messages.appendChild(item);
       window.scrollTo(0, document.body.scrollHeight);
+    });
+    socket.on('video_stop', function(msg) {
+      console.log('video_stop')
+      console.log(msg)
+    });
+    socket.on('video_start', function(msg) {
+      console.log('video_start')
+      console.log(msg)
     });
   </script>
 </html>
